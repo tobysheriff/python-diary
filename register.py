@@ -10,7 +10,7 @@ def register(username, password):
     #Check if username exists
     with sqlite3.connect(users_db) as conn:
         cur = conn.cursor()
-        q = cur.execute("SELECT 1 FROM Users WHERE Username = ?", (username,))
+        q = cur.execute("SELECT * FROM Users WHERE Username = ?", (username,))
         if q.fetchone():
             return (1,"User already exists")
     valid_password = password_check(password)
