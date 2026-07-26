@@ -2,6 +2,7 @@ import sqlite3
 import os
 from variables import Variables
 from user import User
+
 create_users_query = """
 CREATE TABLE IF NOT EXISTS Users(
 Id Integer PRIMARY KEY AUTOINCREMENT,
@@ -16,6 +17,10 @@ insert_user_query = """
 INSERT INTO Users(Username, Password, creationDate, PrivilegeLevel) VALUES
 (?,?,?,?)
 """
+
+find_user_query = "SELECT * FROM Users WHERE Username = ?"
+
+grab_hash_query = "SELECT Hash FROM Users WHERE Username = ?"
 
 usersDbFilename = os.path.basename(Variables.config.users_db_path)
 
@@ -43,5 +48,17 @@ def add_user(user: object):
         q = cur.execute(insert_user_query, (params))
         return(q)
 
+def find_user(username):
+    with sqlite3.connect(Variables.config.users_db_path) as conn:
+        cur = conn.cursor()
+        q = cur.execute(find_user_query, (username,))
+        return(q.fetchone())
+
+def grab_hash(username):
+    with sqlite3.connect(Variables.config.users_db_path) as conn:
+        cur = conn.cursor()
+        q = cur.execute(grab_hash_query, (username,))
+        return(q.fetchone())
+    
 if __name__ == "__main__":
-    create_db(Variables.config.users_db_path)
+    find_user("Toby")
