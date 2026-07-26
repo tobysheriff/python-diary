@@ -18,7 +18,7 @@ INSERT INTO Users(Username, Password, creationDate, PrivilegeLevel) VALUES
 (?,?,?,?)
 """
 
-find_user_query = "SELECT * FROM Users WHERE Username = ?"
+find_user_query = "SELECT Username FROM Users WHERE Username = ?"
 
 grab_hash_query = "SELECT Hash FROM Users WHERE Username = ?"
 
