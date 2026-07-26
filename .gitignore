@@ -1,0 +1,6 @@
+data/users.db
+data/entries.db
+config.json
+venv/
+.venv/
+pycache/
