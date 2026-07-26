@@ -3,6 +3,8 @@ import os
 from variables import Variables
 from user import User
 
+db_path = Variables.config.users_db_path
+
 create_users_query = """
 CREATE TABLE IF NOT EXISTS Users(
 Id Integer PRIMARY KEY AUTOINCREMENT,
@@ -38,27 +40,29 @@ def create_db(path):
     with sqlite3.connect(path) as conn:
         cur = conn.cursor()
         q = cur.execute(create_users_query)
-        print(q)
 
 def add_user(user: object):
     print(f"Inserting user {user.username} into {usersDbFilename}...")
-    with sqlite3.connect(Variables.config.users_db_path) as conn:
+    with sqlite3.connect(db_path) as conn:
         cur = conn.cursor()
         params = (user.username, user.password, user.creationDate, user.privilegeLevel)
         q = cur.execute(insert_user_query, (params))
-        return(q)
+        return(0)
 
 def find_user(username):
-    with sqlite3.connect(Variables.config.users_db_path) as conn:
+    with sqlite3.connect(db_path) as conn:
         cur = conn.cursor()
         q = cur.execute(find_user_query, (username,))
-        return(q.fetchone())
+        user = q.fetchone()
+        if user == None:
+            return (1,"User not found")
+        return (0,q.fetchone())
 
 def grab_hash(username):
-    with sqlite3.connect(Variables.config.users_db_path) as conn:
+    with sqlite3.connect(db_path) as conn:
         cur = conn.cursor()
         q = cur.execute(grab_hash_query, (username,))
-        return(q.fetchone())
+        return (q.fetchone())
     
 if __name__ == "__main__":
-    find_user("Toby")
+    print(find_user("22rToby"))
