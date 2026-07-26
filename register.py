@@ -3,25 +3,26 @@ from variables import Variables
 from user import User
 import datetime
 import bcrypt
-
-users_db = Variables.config.users_db
+from data import add_user
+users_db = Variables.config.users_db_path
 
 def register(username, password):
     #Check if username exists
     with sqlite3.connect(users_db) as conn:
         cur = conn.cursor()
-        q = cur.execute("SELECT 1 FROM Users WHERE Username = ?", username)
+        q = cur.execute("SELECT 1 FROM Users WHERE Username = ?", (username,))
         if q.fetchone():
             return (1,"User already exists")
-    valid_password = password_check(password_check)
+    valid_password = password_check(password)
     if valid_password[0] == False:
         return (1, valid_password[1])
     else: 
         hash = hash_password(password)
-        user = User(username, hash, datetime.datetime.now, 2)
+        user = User(username, hash, datetime.datetime.now(), 2)
+        add_user(user)
         
 def hash_password(password):
-    pw = bytes(password)
+    pw = (password).encode("utf-8")
     salt = bcrypt.gensalt()
 
     hash = bcrypt.hashpw(pw, salt)
@@ -30,6 +31,7 @@ def hash_password(password):
 def password_check(passwd):
     SpecialSym = ['$', '@', '#', '%']
     val = True
+    message = "Success!"
 
     if len(passwd) < 6:
         message = 'Length should be at least 6'
