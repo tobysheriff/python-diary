@@ -1,6 +1,7 @@
 import sqlite3
 import re
 from variables import Variables
+import datetime
 
 users_db = Variables.config.users_db
 
@@ -11,6 +12,11 @@ def register(username, password):
         q = cur.execute("SELECT 1 FROM Users WHERE Username = ?", username)
         if q.fetchone():
             return (1,"User already exists")
+    valid_password = password_check(password_check)
+    if valid_password[0] == False:
+        return valid_password
+    else: 
+        
 
 
 

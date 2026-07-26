@@ -3,4 +3,4 @@ data/entries.db
 config.json
 venv/
 .venv/
-pycache/
+__pycache__/

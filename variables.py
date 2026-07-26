@@ -1,5 +1,4 @@
 from config import load_config
-
+conf = load_config()
 class Variables:
-    def __init__(self, config):
-        self.config = config
+    config = conf

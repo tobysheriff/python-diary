@@ -1,5 +1,6 @@
 import json
 def load_config():
+    print("Loading config...")
     with open("./config.json") as file:
         config_file = file.read()
         config = json.loads(config_file)
