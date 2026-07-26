@@ -1,7 +1,8 @@
 import sqlite3
-import re
 from variables import Variables
+from user import User
 import datetime
+import bcrypt
 
 users_db = Variables.config.users_db
 
@@ -14,11 +15,17 @@ def register(username, password):
             return (1,"User already exists")
     valid_password = password_check(password_check)
     if valid_password[0] == False:
-        return valid_password
+        return (1, valid_password[1])
     else: 
+        hash = hash_password(password)
+        user = User(username, hash, datetime.datetime.now, 2)
         
+def hash_password(password):
+    pw = bytes(password)
+    salt = bcrypt.gensalt()
 
-
+    hash = bcrypt.hashpw(pw, salt)
+    return hash
 
 def password_check(passwd):
     SpecialSym = ['$', '@', '#', '%']

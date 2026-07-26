@@ -8,8 +8,7 @@ Id Integer PRIMARY KEY AUTOINCREMENT,
 Username varchar(255),
 Password Text,
 CreationDate Text,
-PrivilegeLevel Text,
-Banned Text
+PrivilegeLevel Integer
 )
 """
 
@@ -22,7 +21,6 @@ def clear_data_directory():
     os.removedirs("./data")
     os.makedirs("./data")
 
-
 def create_db(path):
     print("Creating")
     with sqlite3.connect(path) as conn:
@@ -30,6 +28,8 @@ def create_db(path):
         q = cur.execute(create_users_query)
         print(q)
 
+def add_user(user: object):
+    
 
 if __name__ == "__main__":
-    print("You've run me as a script!")
+    create_db(Variables.config.users_db_path)
