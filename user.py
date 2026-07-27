@@ -4,4 +4,4 @@ class User:
         self.password = password
         self.creationDate = creationDate
         self.privilegeLevel = privilegeLevel
-    
+
