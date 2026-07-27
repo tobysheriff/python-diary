@@ -11,28 +11,29 @@ Id Integer PRIMARY KEY AUTOINCREMENT,
 Username varchar(255),
 Password Text,
 CreationDate Text,
-PrivilegeLevel Integer2
-)
+PrivilegeLevel Integer
+);
 """
 
 create_entries_query = """
 CREATE TABLE IF NOT EXISTS Entries(
-Id Integer PRIMARYKEY AUTOINCREMENT 
+Id Integer PRIMARY KEY AUTOINCREMENT,
 Title Text,
-Author Int
+Author Int,
 CreationDate Text,
-Content Text
-)
+Content Text,
+Summary Text
+);
 """
 
 insert_user_query = """
 INSERT INTO Users(Username, Password, creationDate, PrivilegeLevel) VALUES
-(?,?,?,?)
+(?,?,?,?);
 """
 
-find_user_query = "SELECT * FROM Users WHERE Username = ?"
+find_user_query = "SELECT * FROM Users WHERE Username = ?;"
 
-grab_hash_query = "SELECT Password FROM Users WHERE Username = ?"
+grab_hash_query = "SELECT Password FROM Users WHERE Username = ?;"
 
 usersDbFilename = os.path.basename(Variables.config.users_db_path)
 
@@ -45,11 +46,11 @@ def clear_data_directory():
     os.removedirs("./data")
     os.makedirs("./data")
 
-def create_db(path):
+def create_db(path,query):
     print("Creating")
     with sqlite3.connect(path) as conn:
         cur = conn.cursor()
-        q = cur.execute(create_users_query)
+        q = cur.execute(query)
 
 def add_user(user: object):
     print(f"Inserting user {user.username} into {usersDbFilename}...")
@@ -77,6 +78,6 @@ def grab_hash(username):
         if hash == None:
             return UserNotFoundError
         return hash
-    
+
 if __name__ == "__main__":
-    print(find_user("22rToby"))
+    print(create_db(Variables.config.entries_db_path, create_entries_query))
