@@ -55,3 +55,8 @@ def remove_user(id):
         q = cur.execute("DELETE FROM Users WHERE id = ?;", (id,))
         return q
 
+def list_users():
+    with sqlite3.connect(users_db) as conn:
+        cur = conn.cursor()
+        q = cur.execute("SELECT Id, Username FROM USERS")
+        return q.fetchall()
