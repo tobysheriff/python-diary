@@ -3,7 +3,8 @@ from variables import Variables
 from user import User
 import datetime
 import bcrypt
-from data import add_user
+from user import add_user
+from error import UserAlreadyExistsError
 users_db = Variables.config.users_db_path
 
 def register(username, password):
@@ -12,7 +13,7 @@ def register(username, password):
         cur = conn.cursor()
         q = cur.execute("SELECT * FROM Users WHERE Username = ?", (username,))
         if q.fetchone():
-            return (1,"User already exists")
+            return UserAlreadyExistsError
     valid_password = password_check(password)
     if valid_password[0] == False:
         return (1, valid_password[1])
@@ -67,3 +68,6 @@ def password_check(passwd):
         val = False
 
     return (val, message)
+
+if __name__ == "__main__":
+    print(register("Toby2", "pa55Word!@"))

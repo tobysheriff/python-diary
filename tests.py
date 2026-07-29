@@ -1,5 +1,5 @@
 from register import register
-from data import create_db
+from db import create_db
 from login import login
 from variables import Variables
 
